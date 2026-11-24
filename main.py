@@ -13,8 +13,10 @@ def main() -> int:
     with open(SRC, "r", encoding="utf-8") as f:
         text = f.read()
     # Guard: the gate is 1-320 chars of UTF-8, not only whitespace, one sentence.
+    # Length is measured on the stripped entry, not the raw file bytes, so a
+    # trailing newline in entry.txt never counts against the 320-char gate.
     stripped = text.strip()
-    if not 1 <= len(text) <= 320 or not stripped or "\n" in stripped:
+    if not 1 <= len(stripped) <= 320 or not stripped or "\n" in stripped:
         print("entry fails gate: must be 1-320 chars, not only whitespace, one line",
               file=sys.stderr)
         return 1
